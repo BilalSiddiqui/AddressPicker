@@ -61,4 +61,8 @@ Features:
 5- You can provide lat/lng to set initial postion of map through intent extras.
   
 
+<<<<<<< HEAD
          
+=======
+         
+>>>>>>> a05e9132ea07e1694fca59bd0bbfa65e7c9124c0
