@@ -12,7 +12,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyApAuv3CTgkXwBvba6h76hTgV6SlRJBlYo" />
+            android:value="YOUR_GOOGLE_API_KEY" />
 
         <activity android:name="com.picker.example.MainActivity">
             <intent-filter>
