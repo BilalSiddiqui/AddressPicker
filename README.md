@@ -1,6 +1,9 @@
 # AddressPicker
 A simple light weight android library to pick address from google map and places API
 
+![Alt text](https://github.com/BilalSiddiqui/AddressPicker/blob/master/sc1.png "Pick address")
+![Alt text](https://github.com/BilalSiddiqui/AddressPicker/blob/master/sc2.png "Search in places API")
+
 Usage:
 
 Step 1. Add it in your root build.gradle at the end of repositories:
