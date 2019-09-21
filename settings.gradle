@@ -1,0 +1,2 @@
+include ':sample', ':addresspicker'
+rootProject.name='AddressSample'

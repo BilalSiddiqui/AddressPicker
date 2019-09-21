@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="AppTheme"  parent="Theme.AppCompat.Light.DarkActionBar" />
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smartlib.addresspicker">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <application>
+
+
+
+        <activity
+            android:name=".AddressPickerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/pick_address"
+            android:theme="@style/FullscreenTheme"></activity>
+    </application>
+
+</manifest>
