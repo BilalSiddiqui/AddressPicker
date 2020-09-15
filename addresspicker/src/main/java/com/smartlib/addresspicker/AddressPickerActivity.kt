@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.android.volley.BuildConfig
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -78,6 +79,8 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         /**
          * Send back the selected address*/
         val RESULT_ADDRESS = "address"
+        val RESULT_LAT= "latitude"
+        val RESULT_LONG= "longitude"
 
         /**
          * Initail optional coordinates*/
@@ -90,10 +93,14 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         /**
          * Set zoom level of map*/
         val ARG_ZOOM_LEVEL = "level_zoom"
+        val ARG_LOCALE="locale"
     }
 
     private var mMap: GoogleMap? = null
     private var mAddress: Address? = null
+    private var userChosenLat: Double? = null
+    private var userChosenLong: Double? = null
+    private var desiredLocale: Locale? = null      //Used to set the language format for API call
     private var mZoomLevel = 10.0f
     private var mDefaultLocation: LatLng? = null
     private var mPinList: ArrayList<Pin>? = null
@@ -154,8 +161,9 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             mPinList = intent.getSerializableExtra(ARG_LIST_PIN) as ArrayList<Pin>
         }
         mZoomLevel = intent.getFloatExtra(ARG_ZOOM_LEVEL, 10.0f)
-
-
+        try {
+            desiredLocale = intent.getSerializableExtra(ARG_LOCALE) as Locale
+        } catch (e: Exception){}
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setSupportActionBar(toolbar)
@@ -180,6 +188,10 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         use_this_location.setOnClickListener {
             val intent = Intent()
             intent.putExtra(RESULT_ADDRESS, mAddress)
+            val bundle: Bundle= Bundle()
+            bundle.putDouble(RESULT_LAT, userChosenLat!!)
+            bundle.putDouble(RESULT_LONG, userChosenLong!!)
+            intent.putExtras(bundle)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -299,12 +311,17 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("SetTextI18n")
     private fun setLocationFromGeoCoder(midLatLng: LatLng?) {
         try {
-            val geo = Geocoder(
-                applicationContext,
-                Locale.getDefault()
-            );
-            selected_cordinates.text =
+            var geo: Geocoder
+            if(desiredLocale!= null){
+                geo= Geocoder(applicationContext, desiredLocale);
+            } else {
+                geo= Geocoder(applicationContext, Locale.getDefault())
+            }
+
+            selected_coordinates.text =
                 "(" + midLatLng?.latitude!!.toString() + "," + midLatLng.longitude + ")"
+            userChosenLat= midLatLng.latitude;
+            userChosenLong= midLatLng.longitude
 
             val addresses =
                 geo.getFromLocation(midLatLng.latitude, midLatLng.longitude, 1);
@@ -439,11 +456,16 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
                     Log.i(TAG, "All location settings are satisfied.")
 
 
-                    mFusedLocationClient!!.requestLocationUpdates(
-                        mLocationRequest,
-                        mLocationCallback, Looper.myLooper()
-                    )
-                    mRequestingLocationUpdates = true
+                    if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        mFusedLocationClient!!.requestLocationUpdates(
+                            mLocationRequest,
+                            mLocationCallback, Looper.myLooper()
+                        )
+                        mRequestingLocationUpdates = true
+                    }
+
                 }
             })
             .addOnFailureListener(this, object : OnFailureListener {
