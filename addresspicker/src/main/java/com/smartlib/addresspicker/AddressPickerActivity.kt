@@ -100,7 +100,6 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mAddress: Address? = null
     private var userChosenLat: Double? = null
     private var userChosenLong: Double? = null
-    private var desiredLocale: Locale? = null      //Used to set the language format for API call
     private var mZoomLevel = 10.0f
     private var mDefaultLocation: LatLng? = null
     private var mPinList: ArrayList<Pin>? = null
@@ -161,9 +160,6 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             mPinList = intent.getSerializableExtra(ARG_LIST_PIN) as ArrayList<Pin>
         }
         mZoomLevel = intent.getFloatExtra(ARG_ZOOM_LEVEL, 10.0f)
-        try {
-            desiredLocale = intent.getSerializableExtra(ARG_LOCALE) as Locale
-        } catch (e: Exception){}
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setSupportActionBar(toolbar)
@@ -311,20 +307,14 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("SetTextI18n")
     private fun setLocationFromGeoCoder(midLatLng: LatLng?) {
         try {
-            var geo: Geocoder
-            if(desiredLocale!= null){
-                geo= Geocoder(applicationContext, desiredLocale);
-            } else {
-                geo= Geocoder(applicationContext, Locale.getDefault())
-            }
+            var geo= Geocoder(applicationContext, Locale.getDefault())
 
             selected_coordinates.text =
                 "(" + midLatLng?.latitude!!.toString() + "," + midLatLng.longitude + ")"
             userChosenLat= midLatLng.latitude;
             userChosenLong= midLatLng.longitude
 
-            val addresses =
-                geo.getFromLocation(midLatLng.latitude, midLatLng.longitude, 1);
+            val addresses = geo.getFromLocation(midLatLng.latitude, midLatLng.longitude, 1);
             if (addresses.isEmpty()) {
                 selected_address.text = "Waiting for Location";
             } else {

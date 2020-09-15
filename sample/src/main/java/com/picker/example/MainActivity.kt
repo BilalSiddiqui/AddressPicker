@@ -26,30 +26,22 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddressPickerActivity::class.java)
             intent.putExtra(AddressPickerActivity.ARG_LAT_LNG,MyLatLng(42.5328966, -122.7751082))
             val pinList=ArrayList<Pin>()
-            pinList.add(Pin(MyLatLng(42.329989, -122.3100),"Work"))
-            pinList.add(Pin(MyLatLng(42.023123, -122.23414),"Home"))
+            pinList.add(Pin(MyLatLng(42.532890, -122.774881),"Work"))   //Right marker
+            pinList.add(Pin(MyLatLng(42.532972, -122.775478),"Home"))   //Left marker
             intent.putExtra(AddressPickerActivity.ARG_LIST_PIN,  pinList)
             intent.putExtra(AddressPickerActivity.ARG_ZOOM_LEVEL,  17.0f)
-            intent.putExtra(AddressPickerActivity.ARG_LOCALE, setAddressLanguage())
             startActivityForResult(intent, REQUEST_ADDRESS)
         }
     }
-
-    private fun setAddressLanguage(): Locale? {
-        val locales = Locale.getAvailableLocales()
-        for (localeIn in locales) {
-            println("localeIn= $localeIn")
-        }
-        return Locale("en", "US")
-        //return Locale("zh-tw", "TW");
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ( resultCode == Activity.RESULT_OK) {
             val address: Address? = data?.getParcelableExtra(RESULT_ADDRESS) as Address
-            selected_address.text = "No. "+ address?.subThoroughfare + ", " + address?.thoroughfare + ", " + address?.locality + ", " + address?.adminArea + ", " + address?.countryName+ " "+address?.postalCode;
+            selected_address1.text = "No. "+ address?.subThoroughfare + ", " + address?.thoroughfare
+            selected_address2.text=  address?.locality + ", " + address?.adminArea + ", " + address?.countryName+ " "+address?.postalCode;
+            selected_country_code.text= "Country Code= "+ address?.countryCode
+
             val bundle: Bundle = data?.extras
             val userChosenLatitude: Double = bundle.getDouble("latitude")
             val userChosenLongitude: Double = bundle.getDouble("longitude")

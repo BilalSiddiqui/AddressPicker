@@ -15,18 +15,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/selected_address"
+        android:id="@+id/selected_address1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/get_address" />
 
     <TextView
+        android:id="@+id/selected_address2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selected_address1" />
+
+    <TextView
+        android:id="@+id/selected_country_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selected_address2" />
+
+    <TextView
         android:id="@+id/selected_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selected_address" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_country_code" />
     <TextView
         android:id="@+id/selected_longitude"
         android:layout_width="wrap_content"
