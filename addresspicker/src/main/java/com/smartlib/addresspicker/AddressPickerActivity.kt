@@ -93,7 +93,6 @@ class AddressPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         /**
          * Set zoom level of map*/
         val ARG_ZOOM_LEVEL = "level_zoom"
-        val ARG_LOCALE="locale"
     }
 
     private var mMap: GoogleMap? = null
